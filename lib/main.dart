@@ -1,3 +1,4 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'dart:math' show Random;
@@ -54,6 +55,8 @@ class _HomePageState extends State<HomePage> {
   int _counter = 0;
 
   void _incrementCounter() {
+    DatabaseReference _testRef = FirebaseDatabase.instance.reference().child("domo");
+    _testRef.set("Testing a random number: ${Random().nextInt(100)}");
     setState(() {
       // This call to setState tells the Flutter framework that something has
       // changed in this State, which causes it to rerun the build method below
