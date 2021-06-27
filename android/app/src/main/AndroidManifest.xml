@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.domo">
+    package="com.legoota.domo">
    <application
         android:label="domo"
         android:icon="@mipmap/ic_launcher">

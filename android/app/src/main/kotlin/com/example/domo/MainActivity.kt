@@ -1,4 +1,4 @@
-package com.example.domo
+package com.legoota.domo
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -1,17 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'dart:math' show Random;
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(Domo());
 }
 
 class Domo extends StatelessWidget {
+
+  final Future<FirebaseApp> _firebaseApp = Firebase.initializeApp();
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Domo',
       theme: ThemeData(primarySwatch: Colors.yellow),
-      home: HomePage(title: 'Dimitri, on mange où ?'),
+      home: FutureBuilder(
+        future: _firebaseApp,
+        builder: (context, snapshot) {
+          if(snapshot.hasError) {
+            print("Erreur ! ${snapshot.error.toString()}");
+            return Text("Une erreur est survenue !");
+          } else if (snapshot.hasData) {
+            return HomePage(title: 'Dimitri, on mange où ?');
+          } else {
+            return Center(child: CircularProgressIndicator());
+          }
+        })
     );
   }
 }
