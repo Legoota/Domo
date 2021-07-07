@@ -52,6 +52,35 @@ class HomePage extends StatefulWidget {
 }
 
 class _TabBarState extends State<HomePage> {
+  Widget choix = Container(
+    decoration: BoxDecoration(
+      image: DecorationImage(
+        image: AssetImage("assets/images/background.png"),
+        fit: BoxFit.cover,
+      ),
+    ),
+    child: Text("Choix restaurant"),
+  );
+
+  Widget ajout = Container(
+    decoration: BoxDecoration(
+      image: DecorationImage(
+        image: AssetImage("assets/images/background.png"),
+        fit: BoxFit.cover,
+      ),
+    ),
+    child: Text("Page ajout restaurant"),
+  );
+
+  Widget modification = Container(
+    decoration: BoxDecoration(
+      image: DecorationImage(
+        image: AssetImage("assets/images/background.png"),
+        fit: BoxFit.cover,
+      ),
+    ),
+    child: Text("Page modification restaurant"),
+  );
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -70,9 +99,9 @@ class _TabBarState extends State<HomePage> {
         ),
         body: TabBarView(
           children: [
-            Text("Choix restaurant"),
-            Text("Page ajout restaurant"),
-            Text("Page modification restaurant"),
+            choix,
+            ajout,
+            modification,
           ],
         ),
       ),
