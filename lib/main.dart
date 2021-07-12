@@ -52,6 +52,17 @@ class HomePage extends StatefulWidget {
 }
 
 class _TabBarState extends State<HomePage> {
+
+  List<String> mealList = ['Ungut', 'Burger King', 'UFA Burger', 'Malker', 'Pain du Grand Père'];
+  String _currentChoice ="";
+
+  void mealChoice() {
+    final _randomChoice = new Random();
+    setState(() {
+      _currentChoice = mealList[_randomChoice.nextInt(mealList.length)];
+    });
+  }
+
   Widget choix = Container(
     decoration: BoxDecoration(
       image: DecorationImage(
@@ -59,7 +70,20 @@ class _TabBarState extends State<HomePage> {
         fit: BoxFit.cover,
       ),
     ),
-    child: Text("Choix restaurant"),
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+        Text("Choix restaurant ici"),
+        ElevatedButton.icon(
+          label: Text('Miam'),
+          icon: Icon(Icons.local_pizza_outlined),
+          onPressed: () {
+            print("new choice");
+          },
+        )
+      ],
+    )
   );
 
   Widget ajout = Container(
@@ -69,7 +93,20 @@ class _TabBarState extends State<HomePage> {
         fit: BoxFit.cover,
       ),
     ),
-    child: Text("Page ajout restaurant"),
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+        Text("Ajoutez un restaurant ici !"),
+        ElevatedButton.icon(
+          label: Text('Ajouter'),
+          icon: Icon(Icons.library_add_outlined),
+          onPressed: () {
+            print("add");
+          },
+        )
+      ],
+    )
   );
 
   Widget modification = Container(
@@ -79,8 +116,22 @@ class _TabBarState extends State<HomePage> {
         fit: BoxFit.cover,
       ),
     ),
-    child: Text("Page modification restaurant"),
+    child:Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+        Text("Modification restaurant ici !"),
+        ElevatedButton.icon(
+          label: Text('Modifier'),
+          icon: Icon(Icons.mode_edit_outline_outlined),
+          onPressed: () {
+            print("edit");
+          },
+        )
+      ],
+    )
   );
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -108,53 +159,3 @@ class _TabBarState extends State<HomePage> {
     );
   }
 }
-
-
-/*
-class _HomePageState extends State<HomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    DatabaseReference _testRef = FirebaseDatabase.instance.reference().child("domo");
-    _testRef.set("Testing a random number: ${Random().nextInt(100)}");
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}*/
