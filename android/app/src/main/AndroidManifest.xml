@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.legoota.domo">
+   <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
    <application
         android:label="Domo"
         android:icon="@mipmap/launcher_icon">

@@ -1,5 +1,9 @@
+import 'package:domo/restaurant.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:math' show Random;
+import 'restaurant.dart';
 
 class Choix extends StatefulWidget {
   _ChoixState createState() => _ChoixState();
@@ -9,17 +13,29 @@ class _ChoixState extends State<Choix> {
 
   List<String> mealList = ['Ungut', 'Burger King', 'UFA Burger', 'Malker', 'Pain du Grand Père']; // TODO: Add firestore database link
   String _currentChoice ="";
+  CollectionReference _collectionRef = FirebaseFirestore.instance.collection('restaurants');
 
   final Shader linearGradient = LinearGradient(
     colors: <Color>[Color(0xffDA44bb), Color(0xff8921aa)],
   ).createShader(Rect.fromLTWH(0.0, 0.0, 200.0, 70.0));
 
   void mealChoice() {
+    getData();
     final _randomChoice = new Random();
     setState(() {
       _currentChoice = mealList[_randomChoice.nextInt(mealList.length)];
     });
   }
+
+  Future<void> getData() async {
+    print("getting data soon");
+      // Get docs from collection reference
+      QuerySnapshot querySnapshot = await _collectionRef.get();
+
+      // Get data from docs and convert map to List
+      final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
+      print(allData);
+    }
 
   @override
   Widget build(BuildContext context) {
