@@ -11,7 +11,6 @@ class Choix extends StatefulWidget {
 
 class _ChoixState extends State<Choix> {
 
-  List<String> mealList = ['Ungut', 'Burger King', 'UFA Burger', 'Malker', 'Pain du Grand Père']; // TODO: Add firestore database link
   String _currentChoice ="";
   CollectionReference _collectionRef = FirebaseFirestore.instance.collection('restaurants');
 
@@ -19,23 +18,29 @@ class _ChoixState extends State<Choix> {
     colors: <Color>[Color(0xffDA44bb), Color(0xff8921aa)],
   ).createShader(Rect.fromLTWH(0.0, 0.0, 200.0, 70.0));
 
-  void mealChoice() {
-    getData();
+  Future<void> mealChoice() async {
+    List<Restaurant> availableChoices = await getAllRestaurants();
     final _randomChoice = new Random();
     setState(() {
-      _currentChoice = mealList[_randomChoice.nextInt(mealList.length)];
+      _currentChoice = availableChoices[_randomChoice.nextInt(availableChoices.length)].nom!;
     });
   }
 
-  Future<void> getData() async {
-    print("getting data soon");
-      // Get docs from collection reference
-      QuerySnapshot querySnapshot = await _collectionRef.get();
+  Future<List<Restaurant>> getAllRestaurants() async {
+    QuerySnapshot querySnapshot = await _collectionRef.get();
 
-      // Get data from docs and convert map to List
-      final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
-      print(allData);
-    }
+    List<Restaurant> allRestaurants = [];
+
+    // Get data from docs and convert them to List<Restaurant>
+    final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
+
+    allData.forEach((element) {
+      Map<String, dynamic> resto = element as Map<String, dynamic>;
+      allRestaurants.add(Restaurant.fromJson(resto));
+    });
+
+    return allRestaurants;
+  }
 
   @override
   Widget build(BuildContext context) {
