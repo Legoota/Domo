@@ -1,10 +1,32 @@
+import 'package:domo/restaurant.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Ajout extends StatefulWidget {
   _AjoutState createState() => _AjoutState();
 }
 
 class _AjoutState extends State<Ajout> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  TextEditingController nomController = TextEditingController();
+  TextEditingController typeController = TextEditingController();
+  TextEditingController villeController = TextEditingController();
+
+  CollectionReference _collectionRef = FirebaseFirestore.instance.collection('restaurants');
+
+    String addRestaurant(Restaurant r) {
+      var returnValue = "";
+      _collectionRef
+          .add({
+            "Nom": r.nom,
+            "Type": r.type,
+            "Ville": r.ville
+          })
+          .then((value) => returnValue = "Restaurant added successfully !")
+          .catchError((error) => returnValue = "Failed to add restaurant: $error");
+      return returnValue;
+    }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -18,13 +40,75 @@ class _AjoutState extends State<Ajout> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          Text("Ajoutez un restaurant ici !"),
-          ElevatedButton.icon(
-            label: Text('Ajouter'),
-            icon: Icon(Icons.library_add_outlined),
-            onPressed: () {
-              print("add");
-            },
+          SizedBox(height: 100),
+          Container(
+             margin: const EdgeInsets.only(left: 20, right: 20),
+             child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                TextFormField(
+                  controller: nomController,
+                  decoration: const InputDecoration(
+                    hintText: 'Nom du restaurant',
+                  ),
+                  validator: (String? value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Obligatoire';
+                    }
+                    return null;
+                  },
+                ),
+                TextFormField(
+                  controller: typeController,
+                  decoration: const InputDecoration(
+                    hintText: 'Type',
+                  ),
+                  validator: (String? value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Obligatoire';
+                    }
+                    return null;
+                  },
+                ),
+                TextFormField(
+                  controller: villeController,
+                  decoration: const InputDecoration(
+                    hintText: 'Ville',
+                  ),
+                  validator: (String? value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Obligatoire';
+                    }
+                    return null;
+                  },
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 16.0),
+                  child: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: ElevatedButton.icon(
+                      label: Text('Ajouter'),
+                      icon: Icon(Icons.library_add_outlined),
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Ajout du nouveau restaurant...')),
+                          );
+                          Restaurant r = new Restaurant(nomController.text, typeController.text, villeController.text);
+                          var result = addRestaurant(r);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text(result)),
+                          );
+                        }
+                      },
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          )
           )
         ],
       )
