@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'choix.dart';
+import 'ajout.dart';
+import 'modification.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -44,52 +46,6 @@ class HomePage extends StatefulWidget {
 
 class _TabBarState extends State<HomePage> {
 
-  Widget ajout = Container(
-    decoration: BoxDecoration(
-      image: DecorationImage(
-        image: AssetImage("assets/images/background.png"),
-        fit: BoxFit.cover,
-      ),
-    ),
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: <Widget>[
-        Text("Ajoutez un restaurant ici !"),
-        ElevatedButton.icon(
-          label: Text('Ajouter'),
-          icon: Icon(Icons.library_add_outlined),
-          onPressed: () {
-            print("add");
-          },
-        )
-      ],
-    )
-  );
-
-  Widget modification = Container(
-    decoration: BoxDecoration(
-      image: DecorationImage(
-        image: AssetImage("assets/images/background.png"),
-        fit: BoxFit.cover,
-      ),
-    ),
-    child:Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: <Widget>[
-        Text("Modification restaurant ici !"),
-        ElevatedButton.icon(
-          label: Text('Modifier'),
-          icon: Icon(Icons.mode_edit_outline_outlined),
-          onPressed: () {
-            print("edit");
-          },
-        )
-      ],
-    )
-  );
-
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -109,8 +65,8 @@ class _TabBarState extends State<HomePage> {
         body: TabBarView(
           children: [
             Choix(),
-            ajout,
-            modification,
+            Ajout(),
+            Modification(),
           ],
         ),
       ),
