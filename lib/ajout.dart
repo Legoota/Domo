@@ -14,18 +14,22 @@ class _AjoutState extends State<Ajout> {
 
   CollectionReference _collectionRef = FirebaseFirestore.instance.collection('restaurants');
 
-    String addRestaurant(Restaurant r) {
-      var returnValue = "";
+    void addRestaurant(Restaurant r) {
       _collectionRef
           .add({
             "Nom": r.nom,
             "Type": r.type,
             "Ville": r.ville
           })
-          .then((value) => returnValue = "Restaurant added successfully !")
-          .catchError((error) => returnValue = "Failed to add restaurant: $error");
-      return returnValue;
+          .then((value) => snackBarTrigger("${r.nom} a été ajouté !"))
+          .catchError((error) => snackBarTrigger("Erreur de l'ajout de ${r.nom}: $error"));
     }
+
+    void snackBarTrigger(String value) {
+    ScaffoldMessenger.of(context).showSnackBar(new SnackBar(
+        content: new Text(value)
+    ));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -97,10 +101,7 @@ class _AjoutState extends State<Ajout> {
                             const SnackBar(content: Text('Ajout du nouveau restaurant...')),
                           );
                           Restaurant r = new Restaurant(nomController.text, typeController.text, villeController.text);
-                          var result = addRestaurant(r);
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text(result)),
-                          );
+                          addRestaurant(r);
                         }
                       },
                     ),
